@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
