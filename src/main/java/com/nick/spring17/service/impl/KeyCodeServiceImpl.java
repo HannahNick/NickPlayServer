@@ -5,6 +5,7 @@ import com.nick.spring17.dto.KeyCodeDTO;
 import com.nick.spring17.entity.KeyCode;
 import com.nick.spring17.service.KeyCodeService;
 import com.nick.spring17.vo.KeyCodeVo;
+import com.nick.spring17.vo.LoginResultVo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +35,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
     }
 
     @Override
-    public Boolean login(KeyCodeDTO keyCodeDTO) {
+    public LoginResultVo login(KeyCodeDTO keyCodeDTO) {
         if (keyCodeDTO.getKeycode()==null){
             throw new RuntimeException("授权码不能为空");
         }
@@ -43,14 +44,14 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         if (keyCode ==null){
             throw new RuntimeException("授权码不存在");
         }
-        String tableToken = keyCode.getToken();
-        if ("".equals(tableToken)){
-            keyCode.setToken(tableToken);
-            keyCode.setUpdateTime(new Date());
-            keyCodeDao.save(keyCode);
-            return true;
-        }
-        return false;
+        LoginResultVo loginResultVo = new LoginResultVo();
+        keyCode.setToken(keyCodeDTO.getToken());
+        keyCode.setUpdateTime(new Date());
+        keyCodeDao.save(keyCode);
+        loginResultVo.setSuccess(true);
+        loginResultVo.setKeycode(keyCode.getKeycode());
+
+        return loginResultVo;
     }
 
     @Override

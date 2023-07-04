@@ -4,6 +4,7 @@ import com.nick.spring17.controller.base.BaseController;
 import com.nick.spring17.dto.KeyCodeDTO;
 import com.nick.spring17.service.KeyCodeService;
 import com.nick.spring17.vo.KeyCodeVo;
+import com.nick.spring17.vo.LoginResultVo;
 import com.nick.spring17.vo.base.BaseVo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -28,26 +29,28 @@ public class KeycodeController extends BaseController {
     }
 
     @PostMapping("/login")
-    public BaseVo<Boolean> login(@RequestBody KeyCodeDTO keyCodeDTO){
+    public BaseVo<LoginResultVo> login(@RequestHeader("token") String token,@RequestBody KeyCodeDTO keyCodeDTO){
         try{
+            keyCodeDTO.setToken(token);
             return wrapperSuccessResult(keyCodeService.login(keyCodeDTO));
         }catch (Exception e){
-            return wrapperFailResult(e.getMessage());
+            return wrapperFailResult(null,e.getMessage());
         }
     }
 
     @PostMapping("/checkToken")
-    public BaseVo<Boolean> checkToken(@RequestBody KeyCodeDTO keyCodeDTO){
+    public BaseVo<Boolean> checkToken(@RequestHeader("token") String token,@RequestBody KeyCodeDTO keyCodeDTO){
         try{
+            keyCodeDTO.setToken(token);
             return wrapperSuccessResult(keyCodeService.checkToken(keyCodeDTO));
         }catch (Exception e){
-            return wrapperFailResult(e.getMessage());
+            return wrapperFailResult(false,e.getMessage());
         }
     }
 
 
     @PostMapping("/findAll")
-    public BaseVo<List<KeyCodeVo>> getAllKeyCode(){
+    public BaseVo<List<KeyCodeVo>> getAllKeyCode(@RequestBody Object obj){
         return wrapperSuccessResult(keyCodeService.getAllKeycodeList());
     }
 }

@@ -12,6 +12,15 @@ public class BaseController {
         return tBaseVo;
     }
 
+    protected <T> BaseVo<T> wrapperFailResult(T data,String msg){
+        BaseVo<T> tBaseVo = new BaseVo<>();
+        tBaseVo.setData(data);
+        tBaseVo.setCode(500);
+        tBaseVo.setMessage(msg);
+
+        return tBaseVo;
+    }
+
     protected <T> BaseVo<T> wrapperFailResult(String msg){
         BaseVo<T> tBaseVo = new BaseVo<>();
         tBaseVo.setData(null);
@@ -20,5 +29,4 @@ public class BaseController {
 
         return tBaseVo;
     }
-
 }
