@@ -20,6 +20,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'org.netbeans.external', name: 'org-apache-commons-lang3', version: 'RELEASE130'
 }
 
 tasks.named('test') {

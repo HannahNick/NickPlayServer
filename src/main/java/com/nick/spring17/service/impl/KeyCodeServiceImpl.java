@@ -4,6 +4,7 @@ import com.nick.spring17.dao.KeyCodeDao;
 import com.nick.spring17.dto.KeyCodeDTO;
 import com.nick.spring17.entity.KeyCode;
 import com.nick.spring17.service.KeyCodeService;
+import com.nick.spring17.utils.NoUtils;
 import com.nick.spring17.vo.KeyCodeVo;
 import com.nick.spring17.vo.LoginResultVo;
 import lombok.AccessLevel;
@@ -25,8 +26,12 @@ public class KeyCodeServiceImpl implements KeyCodeService {
 
     @Override
     public void addKeycode(KeyCodeDTO keyCodeDTO) {
+        if (keyCodeDTO.getKeycode() == null){
+            throw new RuntimeException("授权码不能为空");
+        }
+
         KeyCode keyCode = new KeyCode();
-        keyCode.setId(keyCodeDTO.getId());
+        keyCode.setId(NoUtils.idGen().nextStringId());
         keyCode.setToken("");
         keyCode.setKeycode(keyCodeDTO.getKeycode());
         keyCode.setCreateTime(new Date());
