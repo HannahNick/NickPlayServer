@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,6 +29,13 @@ public class KeyCodeServiceImpl implements KeyCodeService {
     public void addKeycode(KeyCodeDTO keyCodeDTO) {
         if (keyCodeDTO.getKeycode() == null){
             throw new RuntimeException("授权码不能为空");
+        }
+        if (keyCodeDTO.getKeycode().length()<=5){
+            throw new RuntimeException("授权码要大于5位的数字");
+        }
+        KeyCode byKeycode = keyCodeDao.findByKeycode(keyCodeDTO.getKeycode());
+        if (byKeycode!=null){
+            throw new RuntimeException("授权码已存在");
         }
 
         KeyCode keyCode = new KeyCode();
@@ -48,6 +56,9 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         KeyCode keyCode = keyCodeDao.findByKeycode(keyCodeDTO.getKeycode().trim());
         if (keyCode ==null){
             throw new RuntimeException("授权码不存在");
+        }
+        if (keyCodeDTO.getToken() ==null || "".equals(keyCodeDTO.getToken())){
+            throw new RuntimeException("token不能为null");
         }
         LoginResultVo loginResultVo = new LoginResultVo();
         keyCode.setToken(keyCodeDTO.getToken());
@@ -77,7 +88,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
 
     @Override
     public List<KeyCodeVo> getAllKeycodeList() {
-        List<KeyCode> allData = keyCodeDao.findAll();
+        List<KeyCode> allData = keyCodeDao.findAll(Sort.by(Sort.Direction.DESC,"createTime"));
         return allData.stream().map(keyCode -> {
             KeyCodeVo keyCodeVo = new KeyCodeVo();
             keyCodeVo.setId(keyCode.getId());

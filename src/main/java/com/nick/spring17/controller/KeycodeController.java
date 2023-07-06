@@ -24,8 +24,12 @@ public class KeycodeController extends BaseController {
 
     @PostMapping("/add")
     public BaseVo<Boolean> commitOrder( @RequestBody KeyCodeDTO keyCodeDTO){
-        keyCodeService.addKeycode(keyCodeDTO);
-        return wrapperSuccessResult(true);
+        try {
+            keyCodeService.addKeycode(keyCodeDTO);
+            return wrapperSuccessResult(true);
+        }catch (Exception e){
+            return wrapperFailResult(null,e.getMessage());
+        }
     }
 
     @PostMapping("/login")
