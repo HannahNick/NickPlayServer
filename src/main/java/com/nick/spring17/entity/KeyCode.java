@@ -1,10 +1,8 @@
 package com.nick.spring17.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.nick.spring17.entity.enu.EnableFlag;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -33,4 +31,8 @@ public class KeyCode {
     @Column(name = "update_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Date updateTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "enable_flag")
+    private EnableFlag enableFlag = EnableFlag.Y;
 }
