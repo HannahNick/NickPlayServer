@@ -3,6 +3,7 @@ package com.nick.spring17.service.impl;
 import com.nick.spring17.dao.KeyCodeDao;
 import com.nick.spring17.dto.KeyCodeDTO;
 import com.nick.spring17.entity.KeyCode;
+import com.nick.spring17.entity.enu.EnableFlag;
 import com.nick.spring17.service.KeyCodeService;
 import com.nick.spring17.utils.NoUtils;
 import com.nick.spring17.vo.KeyCodeVo;
@@ -11,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,7 +33,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         if (keyCodeDTO.getKeycode().length()<=5){
             throw new RuntimeException("授权码要大于5位的数字");
         }
-        KeyCode byKeycode = keyCodeDao.findByKeycode(keyCodeDTO.getKeycode());
+        KeyCode byKeycode = keyCodeDao.findByKeycodeAndEnableFlag(keyCodeDTO.getKeycode(),EnableFlag.Y);
         if (byKeycode!=null){
             throw new RuntimeException("授权码已存在");
         }
@@ -44,6 +44,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         keyCode.setKeycode(keyCodeDTO.getKeycode());
         keyCode.setCreateTime(new Date());
         keyCode.setUpdateTime(new Date());
+        keyCode.setEnableFlag(EnableFlag.Y);
         keyCodeDao.save(keyCode);
     }
 
@@ -53,7 +54,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
             throw new RuntimeException("授权码不能为空");
         }
 
-        KeyCode keyCode = keyCodeDao.findByKeycode(keyCodeDTO.getKeycode().trim());
+        KeyCode keyCode = keyCodeDao.findByKeycodeAndEnableFlag(keyCodeDTO.getKeycode().trim(),EnableFlag.Y);
         if (keyCode ==null){
             throw new RuntimeException("授权码不存在");
         }
@@ -78,7 +79,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         if (keyCodeDTO.getToken() == null){
             throw new RuntimeException("token不能为空");
         }
-        KeyCode keyCode = keyCodeDao.findByKeycode(keyCodeDTO.getKeycode().trim());
+        KeyCode keyCode = keyCodeDao.findByKeycodeAndEnableFlag(keyCodeDTO.getKeycode().trim(),EnableFlag.Y);
         if (keyCode ==null){
             throw new RuntimeException("授权码不存在");
         }
@@ -88,7 +89,7 @@ public class KeyCodeServiceImpl implements KeyCodeService {
 
     @Override
     public List<KeyCodeVo> getAllKeycodeList() {
-        List<KeyCode> allData = keyCodeDao.findAll(Sort.by(Sort.Direction.DESC,"createTime"));
+        List<KeyCode> allData = keyCodeDao.findAllByEnableFlagOrderByCreateTimeDesc(EnableFlag.Y);
         return allData.stream().map(keyCode -> {
             KeyCodeVo keyCodeVo = new KeyCodeVo();
             keyCodeVo.setId(keyCode.getId());

@@ -34,5 +34,5 @@ public class KeyCode {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "enable_flag")
-    private EnableFlag enableFlag = EnableFlag.Y;
+    EnableFlag enableFlag = EnableFlag.Y;
 }

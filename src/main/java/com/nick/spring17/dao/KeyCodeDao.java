@@ -1,7 +1,7 @@
 package com.nick.spring17.dao;
 
 import com.nick.spring17.entity.KeyCode;
-import org.springframework.data.domain.Sort;
+import com.nick.spring17.entity.enu.EnableFlag;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface KeyCodeDao extends CrudRepository<KeyCode,String> {
 
-    List<KeyCode> findAll(Sort sort);
+    List<KeyCode> findAllByEnableFlagOrderByCreateTimeDesc(EnableFlag enableFlag);
 
 
-    KeyCode findByKeycode(String keycode);
+    KeyCode findByKeycodeAndEnableFlag(String keycode, EnableFlag enableFlag);
 
 }
