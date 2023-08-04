@@ -101,4 +101,14 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         }).toList();
     }
 
+    @Override
+    public void deleteKeycode(KeyCodeDTO keyCodeDTO) {
+        KeyCode keyCode = keyCodeDao.findByKeycodeAndEnableFlag(keyCodeDTO.getKeycode(), EnableFlag.Y);
+        if (keyCode==null){
+            throw new RuntimeException("token不存在");
+        }
+        keyCode.setEnableFlag(EnableFlag.N);
+        keyCodeDao.save(keyCode);
+    }
+
 }

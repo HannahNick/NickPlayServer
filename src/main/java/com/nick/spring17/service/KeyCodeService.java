@@ -12,4 +12,6 @@ public interface KeyCodeService {
 
     Boolean checkToken(KeyCodeDTO keyCodeDTO);
     List<KeyCodeVo> getAllKeycodeList();
+
+    void deleteKeycode(KeyCodeDTO keyCodeDTO);
 }

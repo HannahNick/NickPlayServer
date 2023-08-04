@@ -57,4 +57,14 @@ public class KeycodeController extends BaseController {
     public BaseVo<List<KeyCodeVo>> getAllKeyCode(@RequestBody Object obj){
         return wrapperSuccessResult(keyCodeService.getAllKeycodeList());
     }
+
+    @PostMapping("/deleteKeycode")
+    public BaseVo<Boolean> deleteToken(@RequestBody KeyCodeDTO keyCodeDTO){
+        try{
+            keyCodeService.deleteKeycode(keyCodeDTO);
+            return wrapperSuccessResult(true);
+        }catch (Exception e){
+            return wrapperFailResult(false,e.getMessage());
+        }
+    }
 }
