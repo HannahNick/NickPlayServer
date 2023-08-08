@@ -9,12 +9,14 @@ import com.nick.spring17.vo.base.BaseVo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Log4j2
 @RequestMapping(value = "/keycode", produces = MediaType.APPLICATION_JSON_VALUE)
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class KeycodeController extends BaseController {
             keyCodeService.addKeycode(keyCodeDTO);
             return wrapperSuccessResult(true);
         }catch (Exception e){
+            e.printStackTrace();
             return wrapperFailResult(null,e.getMessage());
         }
     }
@@ -38,6 +41,7 @@ public class KeycodeController extends BaseController {
             keyCodeDTO.setToken(token);
             return wrapperSuccessResult(keyCodeService.login(keyCodeDTO));
         }catch (Exception e){
+            e.printStackTrace();
             return wrapperFailResult(null,e.getMessage());
         }
     }
@@ -48,6 +52,7 @@ public class KeycodeController extends BaseController {
             keyCodeDTO.setToken(token);
             return wrapperSuccessResult(keyCodeService.checkToken(keyCodeDTO));
         }catch (Exception e){
+            e.printStackTrace();
             return wrapperFailResult(false,e.getMessage());
         }
     }
@@ -64,6 +69,7 @@ public class KeycodeController extends BaseController {
             keyCodeService.deleteKeycode(keyCodeDTO);
             return wrapperSuccessResult(true);
         }catch (Exception e){
+            e.printStackTrace();
             return wrapperFailResult(false,e.getMessage());
         }
     }
