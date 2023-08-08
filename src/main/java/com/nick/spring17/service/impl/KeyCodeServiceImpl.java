@@ -83,7 +83,11 @@ public class KeyCodeServiceImpl implements KeyCodeService {
         if (keyCode ==null){
             throw new RuntimeException("授权码不存在");
         }
-        return keyCode.getToken().equals(keyCodeDTO.getToken());
+        boolean result = keyCode.getToken().equals(keyCodeDTO.getToken());
+        if (!result){
+            log.info(String.format("keycode匹配失败,传入token:%1$s 数据库token:%2$s 时间:%3$s",keyCodeDTO.getToken(),keyCode.getToken(),keyCode.getCreateTime().toString()));
+        }
+        return result;
     }
 
 
